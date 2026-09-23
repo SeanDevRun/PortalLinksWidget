@@ -1,16 +1,33 @@
 modules:
   jiraServiceManagement:portalHeader:
-    - key: portallinkswidget-portal-links-panel
-      resource: main
+    - key: portal-links-header
+      resource: portal-links
       resolver:
         function: resolver
-      viewportSize: medium
+      title: Portal Links
+
+  jira:adminPage:
+    - key: portal-links-admin
+      resource: admin
+      resolver:
+        function: resolver
+      title: Portal Links Configuration
+
   function:
     - key: resolver
-      handler: index.handler
+      handler: index.handler      
+
 resources:
-  - key: main
+  - key: portal-links
     path: static/portal-links/build
+
+  - key: admin
+    path: static/admin/build
+
+permissions:
+  scopes:
+    - storage:app
+
 app:
   runtime:
     name: nodejs24.x

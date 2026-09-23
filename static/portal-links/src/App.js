@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { invoke } from "@forge/bridge";
+import LinkButton from "./shared/components/LinkButton";
 
 function App() {
-  const [links, setLinks] = useState([]);
+  const [config, setConfig] = useState({
+    defaultColour: "#004254",
+    links: []
+  });
 
   useEffect(() => {
-    invoke("getLinks").then(setLinks);
+    invoke("getConfig").then(setConfig);
   }, []);
 
   return (
@@ -19,31 +23,20 @@ function App() {
       <div
         style={{
           display: "flex",
-          gap: "8px",
-          flexWrap: "wrap",
+          gap: "8px"
         }}
       >
-        {links.map((link) => (
-          <a
-            key={link.name}
-            href={link.url}
-            target="_blank"
-            rel="noreferrer"
-            style={{
-              textDecoration: "none",
-              padding: "8px 12px",
-              backgroundColor: "#004254",
-              color: "#FFFFFF",
-              border: "1px solid #DFE1E6",
-              borderRadius: "6px",
-              display: "inline-block",
-            }}
-          >
-            {link.name}
-          </a>
+        {config.links.map((link) => (
+
+          <LinkButton
+          key={link.name}
+          link={link}
+          defaultColour={config.defaultColour}
+          />
+
         ))}
       </div>
-    </div>
+    </div >
   );
 }
 
