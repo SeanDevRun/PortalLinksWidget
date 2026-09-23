@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { invoke } from "@forge/bridge";
 
-import { styles } from "./shared/styles";
+
+import LinkButton from "./shared/components/LinkButton";
+
+import { appPrimaryColor, styles } from "./shared/styles";
 
 function App() {
+
   const [config, setConfig] = useState({
-    defaultColour: "#004254",
+    defaultColour: appPrimaryColor,
     links: []
   });
-  const [saveText, setSaveText] = useState("Save");
-  const [saving, setSaving] = useState(false);
+  
+  const [saveStatus, setSaveStatus] = useState("idle");
 
   useEffect(() => {
     invoke("getConfig").then(setConfig);
@@ -30,17 +34,18 @@ function App() {
   };
 
   const save = async () => {
-    setSaving(true);
+    setSaveStatus("saving");
     try {
       await invoke("saveConfig", config);
 
-      setSaveText("✅ Saved");
+      setSaveStatus("saved");
 
       setTimeout(() => {
-        setSaveText("Save");
+        setSaveStatus("idle");
       }, 3000);
-    } finally {
-      setSaving(false);
+    }
+    catch {
+      setSaveStatus("error");
     }
   };
 
@@ -109,7 +114,7 @@ function App() {
               }}
               style={styles.removeButton}
             >
-              Remove
+              X
             </button>
 
             <input
@@ -130,7 +135,7 @@ function App() {
 
             <input
               type="color"
-              value={link.colour || "#004254"}
+              value={link.colour || appPrimaryColor}
               onChange={(e) => {
                 const copy = [...config.links];
                 copy[index].colour = e.target.value;
@@ -157,6 +162,12 @@ function App() {
               }}
             />
 
+            <LinkButton
+              key={link.name}
+              link={link}
+              defaultColour={config.defaultColour}
+            />
+
           </div>
         ))}
 
@@ -173,10 +184,15 @@ function App() {
 
         <button
           onClick={save}
-          disabled={saving}
-          style={styles.saveButton(saving)}
+          disabled={saveStatus!=='idle'}
+          style={styles.saveButton(saveStatus)}
         >
-          {saving ? "Saving..." : saveText}
+          {{
+            idle: "Save",
+            saving: "Saving...",
+            saved: "✅ Saved",
+            error: "❌ Error",
+          }[saveStatus]}
         </button>
       </div>
 

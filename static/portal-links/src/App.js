@@ -2,9 +2,12 @@ import React, { useEffect, useState } from "react";
 import { invoke } from "@forge/bridge";
 import LinkButton from "./shared/components/LinkButton";
 
+import { appPrimaryColor } from "./shared/styles";
+
 function App() {
+
   const [config, setConfig] = useState({
-    defaultColour: "#004254",
+    defaultColour: appPrimaryColor,
     links: []
   });
 
@@ -28,11 +31,20 @@ function App() {
       >
         {config.links.map((link) => (
 
-          <LinkButton
-          key={link.name}
-          link={link}
-          defaultColour={config.defaultColour}
-          />
+          <div
+            key={link.name}
+            style={{
+              flex: "1 1 200px"
+            }}
+          >
+
+            <LinkButton
+              key={link.name}
+              link={link}
+              defaultColour={config.defaultColour}
+            />
+            
+          </div>
 
         ))}
       </div>

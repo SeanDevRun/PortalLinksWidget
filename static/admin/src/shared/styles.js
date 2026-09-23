@@ -1,5 +1,10 @@
+export const appPrimaryColor =  "#004254";
+export const appSuccessColor = "#36B37E";
+export const appErrorColor =  "#DE350B";
+export const appTextColor =  "#FFFFFF";
+
 const buttonBase = {
-  color: "#FFFFFF",
+  color: appTextColor,
   border: "none",
   borderRadius: "6px",
   padding: "8px 12px",
@@ -12,22 +17,28 @@ const buttonBase = {
 export const styles = {
   baseButton: {
     ...buttonBase,
-    backgroundColor: "#004254",
+    backgroundColor: appPrimaryColor,
   },
 
   linkButton: (colour) => ({
     ...buttonBase,
-    backgroundColor: colour || "#004254",
-    flex: "1 1 200px"
+    backgroundColor: colour || appPrimaryColor,
+    width: "100%"
   }),
 
   removeButton: {
     ...buttonBase,
-    backgroundColor: "#DE350B",
+    backgroundColor: appErrorColor,
+    minWidth: "auto"
   },
 
-  saveButton: (saving) => ({
+  saveButton: (status) => ({
     ...buttonBase,
-    backgroundColor: saving ? "#0052CC" : "004254"
+    backgroundColor: {
+      idle: appPrimaryColor,
+      saving: "#0052CC",
+      saved: appSuccessColor,
+      error: appErrorColor,
+    }[status] || appPrimaryColor,
   }),
 };
