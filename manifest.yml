@@ -1,0 +1,19 @@
+modules:
+  jiraServiceManagement:portalHeader:
+    - key: portallinkswidget-portal-links-panel
+      resource: main
+      resolver:
+        function: resolver
+      viewportSize: medium
+  function:
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: static/portal-links/build
+app:
+  runtime:
+    name: nodejs24.x
+    memoryMB: 256
+    architecture: arm64
+  id: ari:cloud:ecosystem::app/2f92126a-2590-4217-a5f3-4b31869d72cf
